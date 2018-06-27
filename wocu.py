@@ -3,7 +3,14 @@
 
 import requests
 import json
+import datetime
+import argparse
 from collections import OrderedDict
+
+parser = argparse.ArgumentParser(description='A simple cli script for\
+ Worldcup scores and fixtures.')
+parser.add_argument('-today', action='store_true', help='Returns todays scores/fixtures.')
+args = parser.parse_args()
 
 
 class WoCu():
@@ -32,17 +39,17 @@ class WoCu():
         for match in self.matches:
             match_date = match['datetime'][:10]
             match_time = self.TimeConvert(match['datetime'][-10:-1])
-            print(match_time)
             if match['status'] == 'future':
                 details = [match_time+' ' + str(match['home_team']['country'])+ \
-                        ' ' + match['away_team']['country']]
+                        ' ' +'x'+' '+ match['away_team']['country']]
             elif match['status'] in ['completed', 'in progress']:
                 details = [match_time+ ' '+str(match['home_team']['country']) +\
                         ' ' + \
                             str(match['home_team']['goals']) + ' '+ 'x'+ ' ' + \
                             str(match['away_team']['country']) +' '+ \
                             str(match['away_team']['goals'])]
-
+            
+            # Adding matches to dictionary using match_date as key 
             if match_date not in results:                      
                 results[match_date] = [details]
             else: 
@@ -50,6 +57,7 @@ class WoCu():
         
         # Returns a ordered dictionary that's been sorted 
         return OrderedDict(sorted(results.items()))
+
 
     def TimeConvert(self, time):
         """
@@ -61,15 +69,28 @@ class WoCu():
         else: pass
         return '{}:00:00'.format(time_val)
 
-    def PrintResults(self, results):
-        for result in results.items():
-            self.PrintSeparator(10)
-            print(result[0])
-            self.PrintSeparator(10)
-            for item in result[1]:
-                print(item[0])
 
-    
+    def PrintResults(self, results, today=False):
+        """
+        This function prints out the results.
+        """
+        if today:
+            now = str(datetime.datetime.now())[:11]
+            int_now = (int(now[0:4]),int(now[5:7]), int(now[8:10]))
+            for result in results.items():
+                int_result_date =\
+                (int(result[0][0:4]),int(result[0][5:7]),int(result[0][8:10]))
+                if int_result_date == int_now:
+                    for item in result[1]:
+                        print(item[0])
+        else:    
+            for result in results.items():
+                self.PrintSeparator(10)
+                print(result[0])
+                self.PrintSeparator(10)
+                for item in result[1]:
+                    print(item[0])
+
     
     def PrintSeparator(self, n):
         """
@@ -77,13 +98,17 @@ class WoCu():
         """
         print('*' * n)
 
-    def Main(self):
+    
+    def Main(self, args):
         """
         This function processes the arguments and runs the required functions. 
         """
-        self.PrintResults(self.Scores())
+        if args.today:
+            self.PrintResults(self.Scores(), today=True)
+        else:
+            self.PrintResults(self.Scores())
 
 # Boilerplate code:
 if __name__ == '__main__':
     instance = WoCu()
-    instance.Main()
+    instance.Main(args)
