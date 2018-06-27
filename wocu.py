@@ -15,12 +15,10 @@ class WoCu():
     def __init__(self):
         # The following line is to connect to the internet for the json file.
         # This is the intended use of the script.
-        # TODO: Go live with the internet server.
         try:
             self.matches = requests.get('http://worldcup.sfg.io/matches').json()
         
-        # The following 2 lines are for testing purposes only and should not
-        # be used in real world scenario.
+        # In case of no network. A file a provided. It may not be updated.
         except:
             with open('resources/matches.json', 'r') as f:
                 self.matches = json.load(f)
@@ -32,7 +30,6 @@ class WoCu():
         """
         results = {}; prev =''
         for match in self.matches:
-            #TODO: convert timezone to australia
             match_date = match['datetime'][:10]
             match_time = self.TimeConvert(match['datetime'][-10:-1])
             print(match_time)
