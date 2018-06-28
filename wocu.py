@@ -10,6 +10,8 @@ from collections import OrderedDict
 parser = argparse.ArgumentParser(description='A simple cli script for\
  Worldcup scores and fixtures.')
 parser.add_argument('-today', action='store_true', help='Returns todays scores/fixtures.')
+parser.add_argument('-save', action='store_true', help='Saves the\
+ score/fixture.')
 args = parser.parse_args()
 
 
@@ -22,11 +24,15 @@ class WoCu():
     def __init__(self):
         # The following line is to connect to the internet for the json file.
         # This is the intended use of the script.
+        self.server = 'https://worldcup.sfg.io/matches'
         try:
-            self.matches = requests.get('http://worldcup.sfg.io/matches').json()
+            print('Connecting to {}'.format(self.server))
+            self.matches = requests.get(self.server).json()
         
         # In case of no network. A file a provided. It may not be updated.
         except:
+            print('Unable to connect to server.')
+            print('Trying to open local file.')
             with open('resources/matches.json', 'r') as f:
                 self.matches = json.load(f)
 
@@ -70,7 +76,7 @@ class WoCu():
         return '{}:00:00'.format(time_val)
 
 
-    def PrintResults(self, results, today=False):
+    def PrintResults(self, results, today=False, save=False):
         """
         This function prints out the results.
         """
@@ -83,7 +89,12 @@ class WoCu():
                 if int_result_date == int_now:
                     for item in result[1]:
                         print(item[0])
-        else:    
+        elif save:
+            print('Saving score/fixtures to resources/save.txt')
+            with open('resources/save.txt', 'w+') as f:
+                f.write(str(results))
+            print('Scores/Fixtures saved.')
+        else:
             for result in results.items():
                 self.PrintSeparator(10)
                 print(result[0])
@@ -105,6 +116,8 @@ class WoCu():
         """
         if args.today:
             self.PrintResults(self.Scores(), today=True)
+        elif args.save:
+            self.PrintResults(self.Scores(), save=True)
         else:
             self.PrintResults(self.Scores())
 
