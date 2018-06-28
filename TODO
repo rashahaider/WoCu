@@ -1,0 +1,8 @@
+Features to add -
+- save scores function.
+- save metrics function.
+- implement yesterday and tomorrow features( similar to today feature)
+- Update from the server in a customised way rather than everytime the script
+  runs.
+
+Features to consider - 
