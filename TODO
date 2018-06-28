@@ -1,3 +1,8 @@
+Cleanup -
+- Clean up the comments.
+- Clean up the formatting.
+- Make the variables more intuitive.
+
 Features to add -
 - save scores function. - Done.
 - save metrics function.
@@ -6,3 +11,5 @@ Features to add -
   runs.
 
 Features to consider - 
+- Refactor the script. 
+  -- The save feature feels ad hoc and could be streamlined. 
