@@ -1,5 +1,5 @@
 Features to add -
-- save scores function.
+- save scores function. - Done.
 - save metrics function.
 - implement yesterday and tomorrow features( similar to today feature)
 - Update from the server in a customised way rather than everytime the script
