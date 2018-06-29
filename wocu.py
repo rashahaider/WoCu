@@ -89,6 +89,9 @@ class WoCu():
                 if int_result_date == int_now:
                     for item in result[1]:
                         print(item[0])
+                else:
+                    print('No matches today.')
+                    sys.exit(0)
         elif save:
             print('Saving score/fixtures to resources/save.txt')
             with open('resources/save.txt', 'w+') as f:
