@@ -11,6 +11,5 @@ Features to add -
   runs.
 
 Features to consider - 
-- Update script for Python 3.7
 - Refactor the script. 
   -- The save feature feels ad hoc and could be streamlined. 
