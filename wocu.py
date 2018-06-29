@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.6
+#!/usr/bin/env python3.7
 # A simple command line utility inspired by from user:fmasanori on github
 
 import requests
@@ -20,7 +20,7 @@ class WoCu():
     WoCu() includes all the functions that deals with parsing and presenting
     all the worldcup information.
     """
-    
+
     def __init__(self):
         # The following line is to connect to the internet for the json file.
         # This is the intended use of the script.
@@ -28,7 +28,7 @@ class WoCu():
         try:
             print('Connecting to {}'.format(self.server))
             self.matches = requests.get(self.server).json()
-        
+
         # In case of no network. A file a provided. It may not be updated.
         except:
             print('Unable to connect to server.')
@@ -54,14 +54,14 @@ class WoCu():
                             str(match['home_team']['goals']) + ' '+ 'x'+ ' ' + \
                             str(match['away_team']['country']) +' '+ \
                             str(match['away_team']['goals'])]
-            
-            # Adding matches to dictionary using match_date as key 
-            if match_date not in results:                      
+
+            # Adding matches to dictionary using match_date as key
+            if match_date not in results:
                 results[match_date] = [details]
-            else: 
+            else:
                 results[match_date].append(details)
-        
-        # Returns a ordered dictionary that's been sorted 
+
+        # Returns a ordered dictionary that's been sorted
         return OrderedDict(sorted(results.items()))
 
 
@@ -105,17 +105,17 @@ class WoCu():
                 for item in result[1]:
                     print(item[0])
 
-    
+
     def PrintSeparator(self, n):
         """
         This function prints rows of stars to help with data presentation.
         """
         print('*' * n)
 
-    
+
     def Main(self, args):
         """
-        This function processes the arguments and runs the required functions. 
+        This function processes the arguments and runs the required functions.
         """
         if args.today:
             self.PrintResults(self.Scores(), today=True)
